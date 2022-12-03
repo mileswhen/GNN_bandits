@@ -37,10 +37,10 @@ class GraphData(Dataset):
         self.train = []
         
     def __len__(self):
-        return len(self.domain)
+        return len(self.train)
 
     def __getitem__(self, idx):
-        return self.domain[idx]
+        return self.train[idx]
     
     def train_data(self) -> torch.Tensor:
         '''returns a batch of graph node feature matrices'''
