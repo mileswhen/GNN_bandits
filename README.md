@@ -2,8 +2,15 @@
 
 This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf).
 
+## Repo structure
+
+* `gnn.py` defines GNN model and methods for computing the empirical G-NTK
+* `gp.py` defines classes for computing gaussian process posterior using G-NTK
+* `bandit.py` perform the GNN-UCB algorithm as described in the paper
+* `utils.py` helper data classes and misc.
+
 ## Notebook experiments
-See the `GNN_bandits` notebook for the following content.
+See the `GNN_bandits.ipynb` notebook for the following content:
 
 1. **GNN model definition** — first experiment with a vanilla GNN in `pytorch_geometric` to compute graph representations.
 2. **Synthetic graph domains** — sample random graphs to construct graph domains as described in paper.
