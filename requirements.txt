@@ -1,0 +1,10 @@
+torch==1.13.0
+torch-cluster==1.6.0
+torch-geometric==2.1.0
+torch-scatter==2.1.0
+torch-sparse==0.6.15
+torch-spline-conv==1.2.1
+networkx==2.8.8
+functorch==1.13.0
+gpytorch==1.9.0
+matplotlib==3.6.2
