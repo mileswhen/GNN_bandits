@@ -34,7 +34,7 @@ Brief overview of contextual bandits and Linear-UCB for understanding. Please re
 
 * $y\_t = f(\mathbf{x}\_t) + \epsilon\_t$. One observes the reward $y\_t$ from a function with some noise. In this case just linear regression: $f(\mathbf{x}\_t) = \mathbf{w}^\top \mathbf{x}$. Here $\mathbf{x}$ is called the "context".
 * Assuming a ridge loss, we have the closed form estimate for the model: $\hat{\mathbf{w}}\_t = (X\_tX\_t^\top + \lambda I)^{-1}X\_t^\top y$. Notice that $K = X\_tX\_t^\top$ is the linear kernel matrix.
-* The cumulative regret is $R\_T = \sum^T\_{t=1} f^\*(\mathbf{x}) - f(\mathbf{x}\_t)$, this should be bounded for the algorithm to converge.
+* The cumulative regret is $R\_T = \Sigma^T\_{t=1} f^\*(\mathbf{x}) - f(\mathbf{x}\_t)$, this should be bounded for the algorithm to converge.
 * Omitting the proof, the error of predictions are bounded by the (scaled) standard deviation of the expected reward: $|f^\* - f| \leq \beta\_t \sqrt{\mathbf{x}\_t^\top (\lambda I + K)^{-1} \mathbf{x}\_t}$
 * This uncertainty bound can then be used in the vanilla UCB acquisition function $\text{UCB}(\mathbf{x}\_t) = f(x\_t) + \beta\_t \sqrt{\mathbf{\mathbf{x}}\_t^\top (\lambda I + K)^{-1} \mathbf{x}\_t}$
 
