@@ -16,8 +16,8 @@ from functorch import make_functional_with_buffers, jacrev
 
 class GNN(torch.nn.Module):
     def __init__(self, width: int = 2048):
-        '''
-        PARAMS
+        '''GNN model w/ 2 ReLU layers.
+        ---
         width: width of hidden layers (should be large in principle)
         '''
         super().__init__()
@@ -41,8 +41,7 @@ class GNN(torch.nn.Module):
             nn.init.normal_(p)
         
     def forward(self, hbar: torch.Tensor) -> torch.Tensor:
-        '''
-        Forward pass
+        '''Forward pass.
         ---
         STEPS
         1. Precomputed node features hbar
@@ -58,10 +57,8 @@ class GNN(torch.nn.Module):
         return gx
 
     def NTK(self, G1: torch.Tensor, G2: torch.Tensor) -> torch.Tensor:
-        '''
-        Computes empirical finite-width NTK between two graphs using jacobian
+        '''Computes empirical finite-width NTK between two graphs w/ jacobian
         ---
-        PARAMS
         G1: aggregate node features hbar of shape (N, D)
         G2: aggregate node features hbar of shape (N, D)
         ---
@@ -87,12 +84,13 @@ class GNN(torch.nn.Module):
         return k.squeeze()
     
     def batchNTK(self, 
-            batch1: torch.Tensor, batch2: torch.Tensor, diag:bool = False
+            batch1: torch.Tensor, 
+            batch2: torch.Tensor,
+            diag: bool = False
         ) -> torch.Tensor:
         '''Computes empirical NTK matrix between a batch of N graphs. 
         NOTE: unvectorized
         ---
-        PARAMS
         batch1: (B, N, D) batched node feature matrix
         batch2: (B, N, D) batched node feature matrix
         diag: whether to only compute the diagonal elements
@@ -116,7 +114,8 @@ class GNN(torch.nn.Module):
         return K
     
     def jac0(self, hbar: torch.Tensor) -> torch.Tensor:
-        '''Computes a flattened jacobian w/ params from init'''
+        '''Computes a flattened jacobian w/ params from init.
+        '''
         with torch.no_grad():
             G = self.jacobian(self.params, self.bufs, hbar)
             G = torch.hstack([g.flatten(2).squeeze() for g in G])
