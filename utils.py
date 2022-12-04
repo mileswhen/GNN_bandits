@@ -1,5 +1,12 @@
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import Dataset
+import torch_geometric
+from torch_geometric.nn import GINConv, global_mean_pool
+from torch_geometric.nn.aggr import SumAggregation
+from torch_geometric.utils.random import erdos_renyi_graph
+from torch_geometric.data import Data
 from typing import List
 
 
@@ -17,6 +24,7 @@ class ENGraph:
         # init random graph
         edges = erdos_renyi_graph(n, p, directed=False)
         x = torch.normal(0, 1, size=(n, 5))
+        self.y = None
         
         # graph object
         graph = Data(x=x, edge_index=edges)
@@ -43,9 +51,6 @@ class GraphData(Dataset):
     def __len__(self):
         return len(self.train)
 
-    def __getitem__(self, idx):
-        return self.train[idx]
-    
     def train_data(self) -> torch.Tensor:
         '''Returns a batch of graph node feature matrices.
         '''
@@ -59,3 +64,23 @@ class GraphData(Dataset):
             [g.y.unsqueeze(0) for g in self.train]
         ).unsqueeze(1)
         return targets
+
+
+class Dotdict(dict):
+    '''Acess dictionary keys with dot notation, recursively.
+    '''
+    def __getattr__(self, key): 
+        return self.get(key)
+    
+    def __setattr__(self, key, val):
+        self[key] = val
+
+    def __delattr(self, key):
+        self.__delitem__(key)
+
+    def __init__(self, dct):
+        for key, val in dct.items():
+            if hasattr(val, "keys"): 
+                val = Dotdict(val)
+            self[key] = val
+
