@@ -1,0 +1,7 @@
+width = 2048
+lr = 0.001
+l0 = 0.01
+dataset = "data/graphs.pkl"
+warmup = 40
+max_T = 100
+save_path = "data/model_state.pt"
