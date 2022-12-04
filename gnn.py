@@ -18,12 +18,11 @@ class GNN(torch.nn.Module):
     def __init__(self, width: int = 2048):
         '''
         PARAMS
-        width: width of hidden layers (should be large)
+        width: width of hidden layers (should be large in principle)
         '''
         super().__init__()
         self.f1 = nn.Linear(5, width, bias=False)
-        self.f2 = nn.Linear(width, width, bias=False)
-        self.f3 = nn.Linear(width, 1, bias=False)
+        self.f2 = nn.Linear(width, 1, bias=False)
         
         # rescaling factor (using c=1) for NTK
         self.cm = torch.sqrt(torch.tensor(1/width))
@@ -53,8 +52,7 @@ class GNN(torch.nn.Module):
         returns graph representation
         '''
         x = self.cm * F.relu(self.f1(hbar))
-        #x = self.cm * F.relu(self.f2(x))
-        x = self.f3(x)
+        x = self.f2(x)
         gx = global_mean_pool(x, batch=None)
         
         return gx
