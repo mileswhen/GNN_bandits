@@ -38,7 +38,7 @@ class GraphData(Dataset):
         '''
         # TODO: assert belongs to same domain
         self.domain = graph_domain
-        self.train = []
+        self.train = set()
         
     def __len__(self):
         return len(self.train)
