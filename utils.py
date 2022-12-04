@@ -4,8 +4,12 @@ from typing import List
 
 
 class ENGraph:
-    '''Container for erdos-renyi graphs'''
     def __init__(self, p, n):
+        '''Container for erdos-renyi graphs.
+        ---
+        p: probability of edge
+        n: num nodes
+        '''
         assert 0 < p < 1
         self.p = p
         self.N = n
@@ -28,8 +32,8 @@ class ENGraph:
 
 class GraphData(Dataset):
     def __init__(self, graph_domain: List[ENGraph]):
-        '''
-        PARAMS
+        '''PyTorch Dataset container.
+        ---
         graph_domain: list of ENgraph objects from a specific graph domain
         '''
         # TODO: assert belongs to same domain
@@ -43,7 +47,8 @@ class GraphData(Dataset):
         return self.train[idx]
     
     def train_data(self) -> torch.Tensor:
-        '''returns a batch of graph node feature matrices'''
+        '''Returns a batch of graph node feature matrices.
+        '''
         data = torch.concat(
             [g.hbar.unsqueeze(0) for g in self.train]
         )
