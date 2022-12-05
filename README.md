@@ -4,14 +4,22 @@ This repo contains experiments that attempt to reproduce and understand the resu
 
 ## Repo structure
 
-* `gnn.py` defines GNN model and methods for computing the empirical G-NTK
-* `gp.py` defines classes for computing gaussian process posterior using G-NTK
-* `bandit.py` perform the GNN-UCB algorithm as described in the paper
-* `utils.py` helper data classes and misc.
+* `./`
+  * `gnn.py` defines GNN model and methods for computing the empirical G-NTK
+  * `ucb.py` defines acquisition function
+  * `gp.py` defines classes for computing gaussian process posterior using G-NTK
+  * `bandit.py` perform the GNN-UCB algorithm as described in the paper, example run `python bandit.py`
+  * `utils.py` helper data classes and misc.
+* `notebooks/`
+  * `GNN_bandits.ipynb` experimental notebook with visualizations
+* `configs/`
+  * `bandit.toml` config for `bandit.py`
+* `data/`
+  * `graphs.pkl` precomputed synthetic dataset of graph domains
+
 
 ## Notebook experiments
 See the `GNN_bandits.ipynb` notebook for the following content:
-
 1. **GNN model definition** — first experiment with a vanilla GNN in `pytorch_geometric` to compute graph representations.
 2. **Synthetic graph domains** — sample random graphs to construct graph domains as described in paper.
 3. **Compute empirical G-NTK** — use jacobian contraction to compute the empirical Graph-NTK matrix for a subset of a graph domain ${\mathcal{G}\_{p,N}}$.
