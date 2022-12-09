@@ -1,6 +1,6 @@
 # Graph Neural Network Bandits
 
-This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf). See the results [here](https://mileswhen.com/posts/gnn_bandits/).
+This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf). See the notebook [here](https://mileswhen.com/posts/gnn_bandits/).
 
 ## Repo structure
 
