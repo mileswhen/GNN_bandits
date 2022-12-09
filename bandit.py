@@ -15,8 +15,7 @@ def explore(data: GraphData, model: GNN, ucb: GNNUCB, t: int) -> torch.Tensor:
     ucb: acquisition object
     t: timestep
     ---
-    returns reward of selected graph and adds it to train data
-    '''
+    returns reward of selected graph and adds it to train data '''
     # evaluation
     model.eval()
 
@@ -39,33 +38,52 @@ def explore(data: GraphData, model: GNN, ucb: GNNUCB, t: int) -> torch.Tensor:
 
 
 def train(
-        optimizer,
+        optimizer, 
         criterion,
         loss_0: torch.Tensor,
         data: GraphData,
         model: GNN,
-        log: bool = False
-    ) -> dict:
+        max_t: int,
+        log=False
+    ) -> collections.OrderedDict:
     '''Training until stopping criterion is reached'''
+    # track loss
     loss = loss_0
-    last_loss = loss_0
+    last_loss = torch.tensor(5.0)
+    losses = []
+    delta_L = torch.tensor(1.0)
+    
+    # reinit model and set to train model.reinit()
     model.reinit()
     model.train()
-    while loss.item() >= loss_0.item():
-        # get train data and labels
-        train_data = data.train_data()
+
+    # gradient steps
+    for k in range(max_t):
+        # get train data and labels 
+        train_data = data.train_data() 
         train_targets = data.train_targets()
 
         # zero the parameter gradients
         optimizer.zero_grad()
-
+        
         # compute loss
         outputs = model(train_data)
         loss = criterion(outputs, train_targets)
-
-        # check a simplified stopping criterion
-        if (loss.item() - last_loss.item()) < 0.02:
-            break
+        
+        # check simplified stopping criterions
+        if k <= 20:
+            delta_L = torch.absolute(last_loss - loss)
+            last_loss = loss
+            losses.append(loss.item())
+            pass
+        elif loss.item() <= loss_0.item():
+            return model.state_dict()
+        elif torch.abs(last_loss - loss)/delta_L <= .05:
+            return model.state_dict()
+        else:
+            delta_L = torch.absolute(last_loss - loss)
+            last_loss = loss
+            losses.append(loss.item())
 
         # step
         loss.backward()
@@ -77,21 +95,21 @@ def train(
 
 def main(conf: Dotdict):
     # init GNN
-    model = GNN(width=conf.width)
+    model = GNN( width=2048)
     model.eval()
 
     # init training setup
-    optimizer = torch.optim.Adam(model.parameters(), lr=conf.lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     criterion = torch.nn.MSELoss()
-    loss_0 = torch.tensor(conf.l0)
+    loss_0 = torch.tensor(2e-3)
 
     # load data
     graphs = pickle.load(open(conf.dataset,"rb"))
     data = GraphData(graphs[(0.25, 10)])
     y_max = torch.max(torch.tensor([g.y for g in data.domain]))
-
+        
     # init acquisition function
-    ucb = GNNUCB(model)
+    ucb = GNNUCB(model, beta=.3)
 
     # store regrets at each timestep
     regrets = []
@@ -105,7 +123,7 @@ def main(conf: Dotdict):
         regrets.append(y_max - graph.y)    
 
     # "exploration and exploitation"
-    print("explore and exploit (80 steps)",end="")
+    print("explore and exploit")
     for t in range(conf.warmup, conf.max_T):
         # explore (pick graphb from domain using prev model)
         y = explore(data, model, ucb, t)
@@ -114,9 +132,11 @@ def main(conf: Dotdict):
         # exploit (train GNN)
         if t%5==0:
             print(f"\nt={t}, regret={y_max-y:.3f} ",end="")
-            params_t = train(optimizer, criterion, loss_0, data, model, True)
+            params_t = train(
+                optimizer, criterion, loss_0, data, model, t, True)
         else:
-            params_t = train(optimizer, criterion, loss_0, data, model, False)
+            params_t = train(
+                optimizer, criterion, loss_0, data, model, t, False)
 
         if t==conf.max_T:
             torch.save(params_t, conf.save_path)

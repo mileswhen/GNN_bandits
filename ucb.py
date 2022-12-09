@@ -7,7 +7,7 @@ class GNNUCB:
             self,
             model: GNN,
             lambd: float = .0025, 
-            beta: float = .0002,
+            beta: float = .1,
             m: int = 512,
             T: int = 100
         ):
@@ -52,5 +52,5 @@ class GNNUCB:
         returns optimistic outcome of choosing graph Gi
         '''
         g = self.jac0(hbar)
-        sigma = self.beta * torch.sqrt(torch.dot(g,  self.K_inv * g))
-        return mu.detach() + sigma
+        sigma = self.beta * torch.sqrt(torch.dot(g,  self.K_inv * g)/self.m)
+        return mu + sigma

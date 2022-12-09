@@ -28,17 +28,18 @@ class GNN(torch.nn.Module):
         self.cm = torch.sqrt(torch.tensor(1/width))
         
         # init normal
+        self.width = width
         for p in self.parameters():
-            nn.init.normal_(p)
+            nn.init.normal_(p, std=1)
         
         # functional for NTK computation
         fnet, self.params, self.bufs = make_functional_with_buffers(self)
         self.jacobian = jacrev(fnet)
     
-    def reinit(self) -> None:
+    def reinit(self, std=1) -> None:
         # init normal
         for p in self.parameters():
-            nn.init.normal_(p)
+            nn.init.normal_(p, std=std)
         
     def forward(self, hbar: torch.Tensor) -> torch.Tensor:
         '''Forward pass.
