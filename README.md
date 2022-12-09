@@ -1,6 +1,6 @@
 # Graph Neural Network Bandits
 
-This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf).
+This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf). See the results [here](https://mileswhen.com/posts/gnn_bandits/).
 
 ## Repo structure
 
@@ -62,8 +62,7 @@ Using modified instructions specified in *Appendix D.2, D.3*:
 * We store $\hat{K}$ as a flat tensor. Since $\hat{K}$ is a diag, we approximate $\mathbf{g}^\top \hat{K} \mathbf{g}$ with $\mathbf{g}^\top \text{diag}(\hat{K}) \odot \mathbf{g}$
 * "explore" for $T_0$ steps with random samples of $G_i$ to pre-train
 * for the subsequent $T_1$ steps train but re-init model parameters at each step
-* for any remaining steps train only every 20 steps
-* use $\beta = 0.0002$ and $\lambda=0.0025$ found from gridsearch (section D.3)
+* use $\beta = 0.3$ and $\lambda=0.0025$
 
 GNN training:
 * use $m=2048$, $L=2$ with gaussian weight init for the GNN
