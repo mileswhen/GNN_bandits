@@ -57,7 +57,7 @@ $$\text{GNN-UCB}(\mathcal{G\_t}) = f\_\text{GNN}(G\_t;\theta\_{t-1}) + \beta\_t 
 
 Using modified instructions specified in *Appendix D.2, D.3*:
 
-* define rounds $T = 100$
+* rounds $T = 175$
 * invert $\hat{K} =(\lambda I + \mathbf{gg}^\top/m)$ by approximating it with a diagonal matrix $\text{diag}(\hat{K})$ 
 * We store $\hat{K}$ as a flat tensor. Since $\hat{K}$ is a diag, we approximate $\mathbf{g}^\top \hat{K} \mathbf{g}$ with $\mathbf{g}^\top \text{diag}(\hat{K}) \odot \mathbf{g}$
 * "explore" for $T_0$ steps with random samples of $G_i$ to pre-train
