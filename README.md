@@ -47,7 +47,7 @@ Brief overview of contextual bandits and Linear-UCB for understanding. Please re
 * This uncertainty bound can then be used in the vanilla UCB acquisition function $\text{UCB}(\mathbf{x}\_t) = f(x\_t) + \beta\_t \sqrt{\mathbf{\mathbf{x}}\_t^\top (\lambda I + K)^{-1} \mathbf{x}\_t}$
 
 For GNN-UCB:
-* Can understand jacobian $\mathbf{g}(G)$ as a basis function $\phi(G)$. 
+* Can understand jacobian $\mathbf{g}(G)$ as a feature map $\phi(G)$. 
 * Here $K = \mathbf{gg}^\top /{m}$, is the gram matrix normalized by the layer width $m$
 * Analogous to LinUCB, the uncertainty can be understood as enforcing a bound on the cumulative regret $R\_T$.
 
