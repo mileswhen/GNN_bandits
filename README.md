@@ -28,7 +28,7 @@ See the `GNN_bandits.ipynb` notebook for the following content:
 
 ## GNN-UCB
 
-Contextual bandits on graphs, using a GNN to approximate some unknown reward function.
+Bayesian optimization with GNNs to approximate some unknown reward function.
 
 ### Background
 
