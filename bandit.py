@@ -8,14 +8,21 @@ from gnn import GNN
 from ucb import GNNUCB
 
 
-def explore(data: GraphData, model: GNN, ucb: GNNUCB, t: int) -> torch.Tensor:
-    '''
+def explore(
+        data: GraphData,
+        model: GNN,
+        ucb: GNNUCB,
+        t: int
+    ) -> torch.Tensor:
+    '''Uses acquisition GNN-UCB to choose new graph from a finite domain.
+    ---
     data: graph domain object 
     model: GNN model object
     ucb: acquisition object
     t: timestep
     ---
-    returns reward of selected graph and adds it to train data '''
+    returns reward y of chosen graph
+    '''
     # evaluation
     model.eval()
 
@@ -44,9 +51,17 @@ def train(
         data: GraphData,
         model: GNN,
         max_t: int,
-        log=False
+        log: bool = False
     ) -> collections.OrderedDict:
-    '''Training until stopping criterion is reached'''
+    '''Training until stopping criterion is reached.
+    ---
+    optimizer: e.g. Adam or SGD
+    criterion: e.g. MSELoss
+    loss_0: threshold loss where training stops early
+    data: holds training data and graph domain
+    max_t: maximum number of grad steps
+    log: whether to print results to stdout
+    '''
     # track loss
     loss = loss_0
     last_loss = torch.tensor(5.0)
@@ -93,7 +108,7 @@ def train(
     return model.state_dict()
 
 
-def main(conf: Dotdict):
+def main(conf: Dotdict) -> None:
     # init GNN
     model = GNN( width=2048)
     model.eval()
@@ -153,6 +168,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    # load toml config and pass to main
     config = Dotdict(tomli.load(open(args.config, "rb")))
     main(config)
 
