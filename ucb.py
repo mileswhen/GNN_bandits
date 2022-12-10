@@ -1,5 +1,6 @@
 import torch
 from gnn import GNN
+from typing import Callable
 
 
 class GNNUCB:
@@ -19,8 +20,8 @@ class GNNUCB:
         beta: uncertainty scaling factor
         m: hidden layer width
         '''
-        # callables
-        self.jac0 = model.jac0
+        # computes jacobian at weight init
+        self.jac0: Callable = model.jac0
         
         # constants
         self.lambd = lambd
