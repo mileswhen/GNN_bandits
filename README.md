@@ -1,6 +1,6 @@
 # Graph Neural Network Bandits
 
-This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf).
+This repo contains experiments that attempt to reproduce and understand the results from [Graph Neural Network Bandits](https://arxiv.org/pdf/2207.06456.pdf). See the notebook [here](https://mileswhen.com/posts/gnn_bandits/).
 
 ## Repo structure
 
@@ -28,11 +28,11 @@ See the `GNN_bandits.ipynb` notebook for the following content:
 
 ## GNN-UCB
 
-Contextual bandits on graphs, using a GNN to approximate some unknown reward function.
+Bayesian optimization with GNNs to approximate some unknown reward function.
 
 ### Background
 
-The authors propose to use the Graph-NTK to balance exploitation, i.e. training of GNN, and exploration of arms, i.e. acquiring new samples $(G\_i, y\_i)$. In the lazy (overparameterized) regime, neural networks are essentially gaussian processes, which allows one to quantify the upper uncertainty bound (UCB) of a GNN with the NTK. For simplicity and understanding we will only implement a variant of NeuralUCB, GNN-UCB.
+The authors propose to use the Graph-NTK to balance exploitation, i.e. training of GNN, and exploration of graphs $(G\_i, y\_i)$. In the lazy (overparameterized) regime, neural networks are essentially gaussian processes, which allows one to quantify the upper uncertainty bound (UCB) of a GNN with the NTK. For simplicity and understanding we will only implement a variant of NeuralUCB, GNN-UCB.
 
 * $\text{UCB}(G; \mu, \sigma) = \mu(G) + \beta\_t\sigma(G)$ is the acquisition function
 * $\mu \triangleq f\_\text{GNN}$ is straightforward, now how to quantify $\sigma$?
@@ -57,13 +57,12 @@ $$\text{GNN-UCB}(\mathcal{G\_t}) = f\_\text{GNN}(G\_t;\theta\_{t-1}) + \beta\_t 
 
 Using modified instructions specified in *Appendix D.2, D.3*:
 
-* define rounds $T = 100$
+* rounds $T = 175$
 * invert $\hat{K} =(\lambda I + \mathbf{gg}^\top/m)$ by approximating it with a diagonal matrix $\text{diag}(\hat{K})$ 
 * We store $\hat{K}$ as a flat tensor. Since $\hat{K}$ is a diag, we approximate $\mathbf{g}^\top \hat{K} \mathbf{g}$ with $\mathbf{g}^\top \text{diag}(\hat{K}) \odot \mathbf{g}$
 * "explore" for $T_0$ steps with random samples of $G_i$ to pre-train
 * for the subsequent $T_1$ steps train but re-init model parameters at each step
-* for any remaining steps train only every 20 steps
-* use $\beta = 0.0002$ and $\lambda=0.0025$ found from gridsearch (section D.3)
+* use $\beta = 0.3$ and $\lambda=0.0025$
 
 GNN training:
 * use $m=2048$, $L=2$ with gaussian weight init for the GNN
