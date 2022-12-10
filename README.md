@@ -8,7 +8,7 @@ This repo contains experiments that attempt to reproduce and understand the resu
   * `gnn.py` defines GNN model and methods for computing the empirical G-NTK
   * `ucb.py` defines acquisition function
   * `gp.py` defines classes for computing gaussian process posterior using G-NTK
-  * `bandit.py` perform the GNN-UCB algorithm as described in the paper, example run `python bandit.py`
+  * `bandit.py` perform the GNN-UCB algorithm as described in the paper
   * `utils.py` helper data classes and misc.
 * `notebooks/`
   * `GNN_bandits.ipynb` experimental notebook with visualizations
@@ -17,6 +17,18 @@ This repo contains experiments that attempt to reproduce and understand the resu
 * `data/`
   * `graphs.pkl` precomputed synthetic dataset of graph domains
 
+## Installation and basic usage
+
+```sh
+conda create -n env python=3.8
+pip install -r requirements
+```
+
+Then run
+
+```sh
+python3 bandit.py
+```
 
 ## Notebook experiments
 See the `GNN_bandits.ipynb` notebook for the following content:
