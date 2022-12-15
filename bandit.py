@@ -153,8 +153,9 @@ def main(conf: Dotdict) -> None:
             params_t = train(
                 optimizer, criterion, loss_0, data, model, t, False)
 
-        if t==conf.max_T:
-            torch.save(params_t, conf.save_path)
+    # save model state to save_path
+    if hasattr(conf, "save_path"):
+        torch.save(params_t, conf.save_path)
 
 
 if __name__ == "__main__":

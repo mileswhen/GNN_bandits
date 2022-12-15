@@ -2,4 +2,5 @@
 __pycache__
 .DS_Store
 **/.DS_Store
+papers/
 data/model_state.pt
