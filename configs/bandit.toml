@@ -1,0 +1,7 @@
+width = 2048
+lr = 0.001
+l0 = 0.0002 
+dataset = "data/graphs.pkl"
+warmup = 40
+max_T = 175
+save_path = "data/checkpoints/model_state.pt"
