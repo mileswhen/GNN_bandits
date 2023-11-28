@@ -53,7 +53,7 @@ The authors propose to use the neural tangent kernel (Graph-NTK) to balance expl
 
 Brief overview of kernelized bandits and Linear-UCB for understanding. Please refer to *section 4.* on regret analysis in the [NeuralUCB paper](https://arxiv.org/pdf/1911.04462.pdf), the original [LinUCB paper](https://arxiv.org/pdf/1003.0146.pdf), or a [lecture on linear bandits](https://sites.cs.ucsb.edu/~yuxiangw/classes/RLCourse-2021Spring/Lectures/scribe\_linear\_bandit.pdf) for in-depth background.
 
-* $y\_t = f(\mathbf{x}\_t) + \epsilon\_t$. One observes the reward $y\_t$ from a function with some noise. In this case just linear regression: $f(\mathbf{x}\_t) = \mathbf{w}^\top \mathbf{x}$. Here $\mathbf{x}$ is called the "context".
+* $y\_t = f(\mathbf{x}\_t) + \epsilon\_t$. One observes the reward $y\_t$ from a function with some noise. In this case just linear regression: $f(\mathbf{x}\_t) = \mathbf{w}^\top \mathbf{x}$.
 * Assuming a ridge loss, we have the closed form estimate for the model: $\hat{\mathbf{w}}\_t = (X\_tX\_t^\top + \lambda I)^{-1}X\_t^\top y$. Notice that $K = X\_tX\_t^\top$ is the linear kernel matrix.
 * The cumulative regret is $R\_T = \Sigma^T\_{t=1} f^\*(\mathbf{x}) - f(\mathbf{x}\_t)$, this should be bounded for the algorithm to converge.
 * Omitting the proof, the error of predictions are bounded by the (scaled) standard deviation of the expected reward: $|f^\* - f| \leq \beta\_t \sqrt{\mathbf{x}\_t^\top (\lambda I + K)^{-1} \mathbf{x}\_t}$
